@@ -1,0 +1,7 @@
+# Optional CosyVoice2 TTS service dependencies.
+# The placeholder HTTP service runs with the main Gateway requirements.
+# Real CosyVoice2 inference also needs the official CosyVoice repository and its requirements.
+torch
+torchaudio
+modelscope
+soundfile

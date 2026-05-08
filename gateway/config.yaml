@@ -1,0 +1,122 @@
+app:
+  name: deepnexus-deskbot-gateway
+  version: 0.1.0
+
+audio_chat:
+  mode: async_job
+  pipeline: stt_llm_tts
+  default_language: zh
+  input_sample_rate: 16000
+  output_format: wav
+  command_poll_mode: true
+
+voice_realtime:
+  enabled: true
+  mode: realtime_uplink_chunked_downlink
+  fallback_http_async: true
+
+audio:
+  sample_rate: 16000
+  channels: 1
+  format: pcm_s16le
+  frame_ms: 20
+
+stt:
+  router: enabled
+  primary:
+    provider: funasr_local
+    model: iic/SenseVoiceSmall
+    timeout_sec: 30
+  final:
+    provider: funasr_local
+    model: iic/SenseVoiceSmall
+    enabled: true
+    block_for_important_tasks: true
+  fallback:
+    - provider: siliconflow_stt
+      model: FunAudioLLM/SenseVoiceSmall
+      enabled: true
+    - provider: cloud_stt_backup
+      model: default
+      enabled: false
+  vad:
+    device_side_vad: true
+    gateway_vad:
+      provider: funasr_local
+      model: fsmn-vad
+      enabled: true
+  streaming:
+    provider: funasr_local
+    model: paraformer-zh-streaming
+    enabled: true
+
+llm:
+  router: enabled
+  primary:
+    provider: siliconflow
+    model: Qwen/Qwen3-8B
+    timeout_sec: 4
+    max_tokens: 80
+    temperature: 0.3
+    stream: true
+    enable_thinking: false
+  voice_chat:
+    provider: siliconflow
+    model: Qwen/Qwen3-8B
+    stream: true
+    enable_thinking: false
+    max_tokens: 80
+    temperature: 0.3
+    timeout_sec: 4
+  fallback:
+    - provider: siliconflow
+      model: Qwen/Qwen3-14B
+      stream: true
+      enable_thinking: false
+      timeout_sec: 5
+      enabled: true
+    - provider: siliconflow
+      model: deepseek-ai/DeepSeek-V3.2
+      stream: true
+      timeout_sec: 6
+      enabled: true
+
+tts:
+  router: enabled
+  primary:
+    provider: siliconflow_tts
+    model: FunAudioLLM/CosyVoice2-0.5B
+    voice: FunAudioLLM/CosyVoice2-0.5B:alex
+    mode: sentence_chunk
+    format: wav
+    timeout_sec: 8
+  cached_audio:
+    enabled: true
+    base_dir: static/audio/system
+  fallback:
+    - provider: cached_audio
+      voice: sorry_retry
+      enabled: true
+    - provider: piper_local
+      voice: zh_default
+      enabled: false
+
+device_command:
+  play_audio:
+    expire_sec: 120
+    retry_limit: 3
+
+job:
+  expire_sec: 300
+  save_step_latency: true
+  save_model_payload: true
+
+fast_intent:
+  enabled: true
+  bypass_llm: true
+  bypass_tts_when_cached: true
+
+core_s3:
+  playback_mode: chunk_queue
+  ws_reconnect: true
+  http_fallback: true

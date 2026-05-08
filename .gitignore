@@ -1,0 +1,63 @@
+# ===== OS / Editor =====
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ===== VS Code (keep shared settings if needed; ignore local) =====
+.vscode/.browse.*
+.vscode/ipch/
+
+# ===== Logs / Temp =====
+*.log
+.logs/
+.tmp/
+
+# ===== Secrets / Env =====
+.env
+.env.local
+*.secret
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ===== PlatformIO / Embedded =====
+.pio/
+.pioenvs/
+.piolibdeps/
+.clang_complete
+.gcc-flags.json
+
+# ===== Models / Third-party (large binaries) =====
+.models/
+.third_party/
+
+# ===== Gateway runtime data =====
+gateway/data/
+gateway/app/static/audio/
+gateway/static/audio/
+
+# ===== Build artifacts =====
+build/
+dist/
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib

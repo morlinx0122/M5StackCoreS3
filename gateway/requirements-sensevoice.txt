@@ -1,0 +1,6 @@
+# Optional local SenseVoiceSmall STT service dependencies.
+# Install these only when running gateway/optional_services/sensevoice_server.py.
+funasr
+modelscope
+soundfile
+

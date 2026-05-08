@@ -1,0 +1,25 @@
+#pragma once
+
+enum class RobotState {
+  BOOT,
+  WIFI_CONNECTING,
+  REGISTERING,
+  IDLE,
+  LISTENING_STREAM,
+  STT_PARTIAL,
+  WAKE_LISTENING,
+  WAKE_DETECTED,
+  RECORDING,
+  LISTENING,
+  UPLOADING,
+  WAITING_REPLY,
+  THINKING,
+  SPEAKING_STREAM,
+  INTERRUPTED,
+  SPEAKING,
+  ACKING,
+  SLEEPING,
+  ERROR_STATE
+};
+
+const char* robotStateToString(RobotState state);
